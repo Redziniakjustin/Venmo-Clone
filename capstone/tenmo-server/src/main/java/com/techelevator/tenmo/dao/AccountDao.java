@@ -6,7 +6,7 @@ import javax.security.auth.login.AccountNotFoundException;
 import java.math.BigDecimal;
 
 public interface AccountDao {
-    Account findAccountById(int id) throws AccountNotFoundException;
+    Account findAccountById(int id);
 
     BigDecimal getBalance(int id);
 
