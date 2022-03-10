@@ -101,12 +101,13 @@ public class App {
 	}
 
 	private void viewTransferHistory() {
-		//if(currentUser != null){
-         //   System.out.println(transferService.getAllTransfers(Long(currentUser.getUser().getId().toString()));
-       // }
-        //}
-		
-	}
+		if(currentUser != null){
+            System.out.println(transferService.getAllTransfers(currentUser.getUser().getId()));
+        }else{
+            consoleService.printErrorMessage();
+       }
+    }
+
 
 	private void viewPendingRequests() {
 		// TODO Auto-generated method stub

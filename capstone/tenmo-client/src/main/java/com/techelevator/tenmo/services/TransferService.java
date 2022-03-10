@@ -31,7 +31,9 @@ public class TransferService {
 
    // public Transfer viewPendingRequests()
 
-    //public BigDecimal
+    public void sendBucks(){
+
+    }
     //Ask hunter: Should this be a void method or a BigDecimal method?
 
     private HttpEntity<Void> makeAuthEntity(){

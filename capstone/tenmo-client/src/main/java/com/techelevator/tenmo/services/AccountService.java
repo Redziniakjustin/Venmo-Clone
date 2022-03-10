@@ -1,6 +1,7 @@
 package com.techelevator.tenmo.services;
 
 import com.techelevator.tenmo.model.Account;
+import com.techelevator.tenmo.model.User;
 import com.techelevator.util.BasicLogger;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -42,6 +43,7 @@ public class AccountService {
     }
 
     public BigDecimal getBalance(){
+        //TODO: Fix
         BigDecimal balance = new BigDecimal("0.00");
         try {
             ResponseEntity<BigDecimal> response = restTemplate.exchange(API_BASE_URL, HttpMethod.GET, makeAuthEntity(), BigDecimal.class);
