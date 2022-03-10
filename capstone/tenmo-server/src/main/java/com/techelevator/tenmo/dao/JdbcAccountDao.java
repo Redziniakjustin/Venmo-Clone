@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 
 import javax.security.auth.login.AccountNotFoundException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class JdbcAccountDao implements AccountDao{
@@ -53,6 +55,18 @@ public class JdbcAccountDao implements AccountDao{
             }
             return balance;
         }
+
+    @Override
+    public List<Account> getAllAccounts() {
+        List<Account> getAllAcounts = new ArrayList<>();
+        String sql = "SELECT username FROM tenmo_user AS tu LEFT JOIN account AS a ON tu.user_id = a.account_id;";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
+        while (results.next()) {
+            Account account = mapToRow(results);
+            getAllAcounts.add(account);
+        }
+        return getAllAcounts;
+    }
 
     private Account mapToRow(SqlRowSet rs){
         Account acct = new Account();

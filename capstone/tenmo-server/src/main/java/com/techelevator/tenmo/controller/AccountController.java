@@ -2,6 +2,7 @@ package com.techelevator.tenmo.controller;
 
 
 import com.techelevator.tenmo.Services.AccountService;
+import com.techelevator.tenmo.Services.RestAccountService;
 import com.techelevator.tenmo.dao.AccountDao;
 import com.techelevator.tenmo.model.Account;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/account")
@@ -20,14 +23,17 @@ import java.security.Principal;
 
 public class AccountController {
     private AccountDao dao;
-    private AccountService accountService;
+    private RestAccountService accountService;
 
-    public AccountController(AccountDao dao, AccountService accountService){
+    public AccountController(AccountDao dao, RestAccountService accountService){
         this.dao=dao;
         this.accountService=accountService;
     }
 
-    //GetListofAllAccounts? List<User>
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public List<Account> getAllAccount(){
+        return dao.getAllAccounts();
+    }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public Account getAccount(@PathVariable int account_id){
