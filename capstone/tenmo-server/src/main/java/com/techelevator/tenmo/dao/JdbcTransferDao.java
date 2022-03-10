@@ -21,7 +21,7 @@ public class JdbcTransferDao implements TransferDao{
     public static List<Transfer> listTransfers = new ArrayList<>();
 
     @Override
-    public List<Transfer> list(int userId) {
+    public List<Transfer> getAllList(int userId) {
         List<Transfer> transfers = new ArrayList<>();
         String sql = "SELECT transfer_id, transfer_type_id, transfer_status_id, account_from, account_to, amount \n" +
                 "FROM transfer AS t INNER JOIN account AS a ON a.account_id = t.account_from WHERE a.user_id = ?;";
@@ -34,7 +34,7 @@ public class JdbcTransferDao implements TransferDao{
     }
 
     @Override
-    public Transfer get(int transferId) {
+    public Transfer getSingleTransfer(int transferId) {
         Transfer transfer = null;
         String sql = "SELECT * FROM transfer WHERE transfer_id = ?;";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, transferId);
@@ -60,6 +60,10 @@ public class JdbcTransferDao implements TransferDao{
         String sql = "DELETE FROM transfer WHERE transferId=?";
         return jdbcTemplate.update(sql, transferId) == 1;
     }*/
+
+    // Add and subtract to balance methods here? these would update amount
+
+
     private Transfer mapToRow(SqlRowSet rs){
         Transfer trns = new Transfer();
         trns.setTransferId(rs.getInt("transfer_id"));

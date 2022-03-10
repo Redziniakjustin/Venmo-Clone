@@ -22,7 +22,6 @@ public class AccountController {
     private AccountDao dao;
     private AccountService accountService;
 
-    //CONSTRUCTOR
     public AccountController(AccountDao dao, AccountService accountService){
         this.dao=dao;
         this.accountService=accountService;
