@@ -17,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/account/transfers")
-//@PreAuthorize("isAuthenticated()")
+@PreAuthorize("isAuthenticated()")
 public class TransferController {
     private TransferDao dao;
     private RestAccountService accountService;

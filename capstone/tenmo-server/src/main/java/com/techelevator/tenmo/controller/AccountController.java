@@ -30,7 +30,7 @@ public class AccountController {
         this.accountService=accountService;
     }
 
-    @RequestMapping(value = "", method = RequestMethod.GET)
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
     public List<Account> getAllAccount(){
         return dao.getAllAccounts();
     }
