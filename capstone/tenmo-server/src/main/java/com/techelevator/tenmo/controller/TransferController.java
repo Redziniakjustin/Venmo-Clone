@@ -42,7 +42,7 @@ public class TransferController {
     public void newTransaction(@Valid @RequestBody Transfer completedTranscation){
         dao.create(completedTranscation);
     }
-    
+
 /*
    //This would be a PUT to update the balance - maybe this would go into Account Controller
     @ResponseStatus(HttpStatus.NO_CONTENT)
