@@ -13,20 +13,21 @@ import org.springframework.web.client.RestTemplate;
 import java.math.BigDecimal;
 
 public class TransferService {
-    public static final String API_BASE_URL = "http://localhost:8080/account/transfer";
+    public static final String API_BASE_URL = "http://localhost:8080/account/transfers/";
     private RestTemplate restTemplate = new RestTemplate();
 
     private String authToken = null;
 
     public Transfer[] getAllTransfers(int id){
-        Transfer[] allTransfer = null;
-        try{
-            ResponseEntity<Transfer[]> response = restTemplate.exchange(API_BASE_URL + id, HttpMethod.GET, makeAuthEntity(), Transfer[].class);
-            allTransfer = response.getBody();
-        }catch(RestClientResponseException | ResourceAccessException e){
-            BasicLogger.log(e.getMessage());
-        }
-        return allTransfer;
+      //  Transfer[] allTransfer = null;
+       // try{
+
+            ResponseEntity<Transfer[]> response = restTemplate.exchange(API_BASE_URL +id+"/list", HttpMethod.GET, makeAuthEntity(), Transfer[].class);
+            return response.getBody();
+      //  }catch(RestClientResponseException | ResourceAccessException e){
+        //    BasicLogger.log(e.getMessage());
+       // }
+      //  return response.getBody();
     }
 
    // public Transfer viewPendingRequests()

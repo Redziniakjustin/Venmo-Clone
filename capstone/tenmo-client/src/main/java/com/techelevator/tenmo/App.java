@@ -15,7 +15,7 @@ public class App {
 
     private final ConsoleService consoleService = new ConsoleService();
     private final AuthenticationService authenticationService = new AuthenticationService(API_BASE_URL);
-    private final AccountService accountService = new AccountService();
+    private AccountService accountService = new AccountService();
     private final TransferService transferService = new TransferService();
 
     private AuthenticatedUser currentUser;

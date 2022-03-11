@@ -1,6 +1,7 @@
 package com.techelevator.tenmo.services;
 
 import com.techelevator.tenmo.model.Account;
+import com.techelevator.tenmo.model.AuthenticatedUser;
 import com.techelevator.tenmo.model.User;
 import com.techelevator.util.BasicLogger;
 import org.springframework.http.HttpEntity;
@@ -15,10 +16,18 @@ import java.math.BigDecimal;
 
 public class AccountService {
 
-    public static final String API_BASE_URL = "http://localhost:8080/account/";
+    public static String API_BASE_URL = "http://localhost:8080/account/";
     private RestTemplate restTemplate = new RestTemplate();
+    public AuthenticatedUser currentUser= new AuthenticatedUser();
+
+    public AccountService(AuthenticatedUser currentUser) {
+        this.currentUser=currentUser;
+    }
 
     private String authToken = null;
+
+    public AccountService() {
+    }
 
     public Account getAccount(int id){
         Account userAccount = null;
@@ -34,7 +43,7 @@ public class AccountService {
     public Account[] getAllAccounts(){
         Account[] accounts = null;
         try {
-            ResponseEntity<Account[]> response = restTemplate.exchange(API_BASE_URL, HttpMethod.GET, makeAuthEntity(), Account[].class);
+            ResponseEntity<Account[]> response = restTemplate.exchange(API_BASE_URL+currentUser.getUser().getId(), HttpMethod.GET, makeAuthEntity(), Account[].class);
             accounts = response.getBody();
         }catch(RestClientResponseException | ResourceAccessException e){
             BasicLogger.log(e.getMessage());
@@ -44,20 +53,19 @@ public class AccountService {
 
     public BigDecimal getBalance(){
         //TODO: Fix
-        BigDecimal balance = new BigDecimal("0.00");
-        try {
-            ResponseEntity<BigDecimal> response = restTemplate.exchange(API_BASE_URL, HttpMethod.GET, makeAuthEntity(), BigDecimal.class);
-            balance = response.getBody();
-        }catch (RestClientResponseException | ResourceAccessException e){
-            BasicLogger.log(e.getMessage());
-        }
-        return balance;
-
+      //  BigDecimal balance = new BigDecimal("0.00");
+      //  try {
+           ResponseEntity<BigDecimal> response = restTemplate.exchange(API_BASE_URL+currentUser.getUser().getId(),HttpMethod.GET, makeAuthEntity(), BigDecimal.class);
+            return response.getBody();
+       // }catch (RestClientResponseException | ResourceAccessException e){
+         //   BasicLogger.log(e.getMessage());
+      // }
+        //return response.getBody();
     }
 
     private HttpEntity<Void> makeAuthEntity(){
         HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(authToken);
+        headers.setBearerAuth(currentUser.getToken());
         return new HttpEntity<>(headers);
     }
 }

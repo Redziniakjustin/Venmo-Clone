@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
-@RequestMapping("/account/transfers")
+@RequestMapping("/account/transfers/")
 @PreAuthorize("isAuthenticated()")
 public class TransferController {
     private TransferDao dao;
@@ -29,12 +29,12 @@ public class TransferController {
         this.accountService=accountService;
     }
 
-    @RequestMapping( value = "/{id}/list", method = RequestMethod.GET)
+    @RequestMapping( value = "{id}/list", method = RequestMethod.GET)
     public List <Transfer> getAllTransfers(@PathVariable int id){
       return dao.getAllList(id);
     }
 
-    @RequestMapping ( value ="/{id}", method = RequestMethod.GET)
+    @RequestMapping ( value ="{id}", method = RequestMethod.GET)
     public Transfer getOneTransfer(@PathVariable int id){
         return dao.getSingleTransfer(id);
     }
@@ -42,7 +42,7 @@ public class TransferController {
 
    //This would be a POST to update the transactions
     @ResponseStatus(HttpStatus.CREATED)
-    @RequestMapping(value = "/{id}",method = RequestMethod.POST)
+    @RequestMapping(value = "{id}",method = RequestMethod.POST)
             public void newTransaction(@Valid @RequestBody Transfer completedTransfer){
 
         if (! dao.createTransaction(completedTransfer.getTransferTypeId(),completedTransfer.getTransferStatusId(),
