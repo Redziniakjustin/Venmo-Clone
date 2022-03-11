@@ -9,10 +9,10 @@ public interface TransferDao {
 
     //Updated list name from list to get All List so that it makes more sense in the controller
 
-    List<Transfer> getAllList(int userId);
+    List<Transfer> getAllList(String username);
     Transfer getSingleTransfer(int transferId);
     boolean createTransaction(int transfer_type_id, int transfer_status_id, int account_from, int account_to, BigDecimal amount);
-    Integer updateBalance(int account_id);
+    Integer updateBalance(int id);
 
     //Transfer getId (int transferId);
     //boolean delete(int transferId);

@@ -21,7 +21,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/account")
-//@PreAuthorize("isAuthenticated()")
+@PreAuthorize("isAuthenticated()")
 
 public class AccountController {
     private AccountDao dao;
@@ -36,19 +36,14 @@ public class AccountController {
         this.transferController = transferController;
     }
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public List<Account> getAllAccount(){
-        return dao.getAllAccounts();
-    }
+   // @RequestMapping(value = "/list", method = RequestMethod.GET)
+   // public List<Account> getAllAccount(){
+    //    return dao.getAllAccounts();
+   // }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public Account getAccount(@PathVariable int account_id){
-        return dao.findAccountById(account_id);
-    }
-
-   @RequestMapping(value = "/balance", method = RequestMethod.GET)
-   public BigDecimal getBalance(@PathVariable int account_id) {
-        return dao.findAccountById(account_id).getBalance();
+    public Account getAccount(Principal principal){
+        return dao.findAccountByUser(principal.getName());
     }
 
     private Long getCurrentUserId(Principal principal){

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import javax.security.auth.login.AccountNotFoundException;
 import java.math.BigDecimal;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,18 +23,18 @@ public class JdbcAccountDao implements AccountDao{
 
     // GET ACCOUNT INFORMATION
     @Override
-    public Account findAccountById(int user_id){
+    public Account findAccountByUser(String username){
         Account accountId = null;
-        String sql = "SELECT account_id, balance FROM account WHERE user_id = ?;";
+        String sql = "SELECT account_id, a.user_id, balance FROM account AS a INNER JOIN tenmo_user as tu ON tu.user_id = a.user_id WHERE username = ?;";
 
-        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, user_id);
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, username);
         try {
             if (results.next()) {
                 accountId = mapToRow(results);
             }
         }catch(DataAccessException e){
             //Change message?
-            System.out.println("Account "+ user_id +" was not found.");
+            System.out.println("Account "+ username +" was not found.");
         }
             return accountId;
     }
@@ -58,7 +59,7 @@ public class JdbcAccountDao implements AccountDao{
         }
 
         //#4 GET LIST OF ACCOUNTS
-    @Override
+ /*   @Override
     public List<Account> getAllAccounts() {
         List<Account> getAllAcounts = new ArrayList<>();
     //    String sql = "SELECT username FROM tenmo_user AS tu LEFT JOIN account AS a ON tu.user_id = a.user_id;";
@@ -72,7 +73,7 @@ public class JdbcAccountDao implements AccountDao{
             getAllAcounts.add(account);
         }
         return getAllAcounts;
-    }
+    }*/
 
     private Account mapToRow(SqlRowSet rs){
         Account acct = new Account();

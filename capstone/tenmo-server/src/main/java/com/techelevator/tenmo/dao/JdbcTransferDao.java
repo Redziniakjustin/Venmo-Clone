@@ -30,14 +30,15 @@ public class JdbcTransferDao implements TransferDao{
     "INNER JOIN transfer_type tt ON t.transfer_type_id = tt.transfer_type_id "+
     "INNER JOIN transfer_status ts ON t.transfer_status_id = ts.transfer_status_id "+
     "INNER JOIN account aFrom on account_from = aFrom.account_id "+
-    "INNER JOIN account aTo on account_to = aTo.account_id;";
+    "INNER JOIN account aTo on account_to = aTo.account_id " +
+            "INNER JOIN tenmo_user AS tu ON tu.user_id IN (aFrom.user_id, aTo.user_id)";
 
     //#6 GET ALL TRANSACTIONS FOR SPECIFIC USER
     @Override
-    public List<Transfer> getAllList(int userId) {
+    public List<Transfer> getAllList(String username) {
         List<Transfer> transfers = new ArrayList<>();
-     //   String sql = SQL_TRANSFER_BASE+ "WHERE a.user_id = ?;";
-        SqlRowSet results = jdbcTemplate.queryForRowSet(SQL_TRANSFER_BASE, userId);
+       String sql = SQL_TRANSFER_BASE+ " WHERE tu.username = ?;";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, username);
         while(results.next()){
             Transfer transferForList = mapToRow(results);
             transfers.add(transferForList);
@@ -50,7 +51,7 @@ public class JdbcTransferDao implements TransferDao{
     public Transfer getSingleTransfer(int transferId) {
         Transfer transfer = null;
       //  String sql = "SELECT transfer_type_id, transfer_status_id, account_from, account_to, amount FROM transfer WHERE transfer_id = ?;";
-        String sql = SQL_TRANSFER_BASE+ "WHERE transfer_id = ?;";
+        String sql = SQL_TRANSFER_BASE+ " WHERE transfer_id = ?;";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, transferId);
         try{
         if(results.next()){

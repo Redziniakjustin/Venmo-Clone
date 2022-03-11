@@ -65,6 +65,8 @@ public class App {
         currentUser = authenticationService.login(credentials);
         if (currentUser == null) {
             consoleService.printErrorMessage();
+        }else{
+            accountService.currentUser = currentUser;
         }
     }
 
@@ -95,7 +97,7 @@ public class App {
 	private void viewCurrentBalance() {
 
         if(currentUser != null){
-            System.out.println(accountService.getBalance(currentUser));
+            System.out.println(accountService.getBalance());
         }else{
             consoleService.printErrorMessage();
         }
@@ -112,7 +114,7 @@ public class App {
 
 
 	private void viewPendingRequests() {
-		// TODO Auto-generated method stub
+		//if()
 		
 	}
 

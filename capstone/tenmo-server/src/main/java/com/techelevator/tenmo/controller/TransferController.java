@@ -13,10 +13,11 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.math.BigDecimal;
+import java.security.Principal;
 import java.util.List;
 
 @RestController
-@RequestMapping("/account/transfers/")
+@RequestMapping("/account/transfers")
 @PreAuthorize("isAuthenticated()")
 public class TransferController {
     private TransferDao dao;
@@ -29,12 +30,12 @@ public class TransferController {
         this.accountService=accountService;
     }
 
-    @RequestMapping( value = "{id}/list", method = RequestMethod.GET)
-    public List <Transfer> getAllTransfers(@PathVariable int id){
-      return dao.getAllList(id);
+    @RequestMapping( value = "", method = RequestMethod.GET)
+    public List <Transfer> getAllTransfers(Principal principal){
+      return dao.getAllList(principal.getName());
     }
 
-    @RequestMapping ( value ="{id}", method = RequestMethod.GET)
+    @RequestMapping ( value ="/{id}", method = RequestMethod.GET)
     public Transfer getOneTransfer(@PathVariable int id){
         return dao.getSingleTransfer(id);
     }
