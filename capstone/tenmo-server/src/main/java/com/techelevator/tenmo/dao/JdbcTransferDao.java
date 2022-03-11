@@ -18,7 +18,6 @@ public class JdbcTransferDao implements TransferDao{
 
         this.jdbcTemplate = jdbcTemplate;
     }
-
     public static List<Transfer> listTransfers = new ArrayList<>();
 
     @Override
