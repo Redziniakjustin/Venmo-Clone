@@ -8,9 +8,8 @@ import java.util.List;
 
 public interface AccountDao {
     Account findAccountById(int id);
-
     BigDecimal getBalance(int id);
-
     List<Account> getAllAccounts();
+ //   String getUsernameByUserId(int user_id);
 
 }

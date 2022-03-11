@@ -21,7 +21,6 @@ public class TransferService {
     public Transfer[] getAllTransfers(int id){
       //  Transfer[] allTransfer = null;
        // try{
-
             ResponseEntity<Transfer[]> response = restTemplate.exchange(API_BASE_URL +id+"/list", HttpMethod.GET, makeAuthEntity(), Transfer[].class);
             return response.getBody();
       //  }catch(RestClientResponseException | ResourceAccessException e){

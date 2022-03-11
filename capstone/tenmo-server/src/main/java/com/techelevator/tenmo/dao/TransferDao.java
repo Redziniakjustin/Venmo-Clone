@@ -12,6 +12,8 @@ public interface TransferDao {
     List<Transfer> getAllList(int userId);
     Transfer getSingleTransfer(int transferId);
     boolean createTransaction(int transfer_type_id, int transfer_status_id, int account_from, int account_to, BigDecimal amount);
+    Integer updateBalance(int account_id);
+
     //Transfer getId (int transferId);
     //boolean delete(int transferId);
 }
