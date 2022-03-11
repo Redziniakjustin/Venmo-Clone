@@ -21,18 +21,18 @@ public class JdbcAccountDao implements AccountDao{
     }
 
     @Override
-    public Account findAccountById(int account_id){
+    public Account findAccountById(int user_id){
         Account accountId = null;
-        String sql = "SELECT * FROM account WHERE user_id = ?;";
+        String sql = "SELECT account_id, balance FROM account WHERE user_id = ?;";
 
-        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, account_id);
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, user_id);
         try {
             if (results.next()) {
                 accountId = mapToRow(results);
             }
         }catch(DataAccessException e){
             //Change message?
-            System.out.println("Account "+ account_id +" was not found.");
+            System.out.println("Account "+ user_id +" was not found.");
         }
             return accountId;
     }
