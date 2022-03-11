@@ -56,6 +56,11 @@ public class JdbcTransferDao implements TransferDao{
 
     }
 
+    //@Override
+    //public Transfer increaseBalance(Transfer transfer){
+    //    String sql = "UPDATE"
+    //}
+
    /* @Override
     public boolean delete(int transferId) {
         String sql = "DELETE FROM transfer WHERE transferId=?";

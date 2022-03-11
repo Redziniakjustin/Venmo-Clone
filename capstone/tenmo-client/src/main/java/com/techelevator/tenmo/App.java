@@ -20,6 +20,8 @@ public class App {
 
     private AuthenticatedUser currentUser;
 
+
+
     public static void main(String[] args) {
         App app = new App();
         app.run();
@@ -93,7 +95,7 @@ public class App {
 	private void viewCurrentBalance() {
 
         if(currentUser != null){
-            System.out.println(accountService.getBalance());
+            System.out.println(accountService.getBalance(currentUser));
         }else{
             consoleService.printErrorMessage();
         }

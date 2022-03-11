@@ -51,11 +51,11 @@ public class AccountService {
         return accounts;
     }
 
-    public BigDecimal getBalance(){
+    public BigDecimal getBalance(AuthenticatedUser current){
         //TODO: Fix
       //  BigDecimal balance = new BigDecimal("0.00");
       //  try {
-           ResponseEntity<BigDecimal> response = restTemplate.exchange(API_BASE_URL+currentUser.getUser().getId(),HttpMethod.GET, makeAuthEntity(), BigDecimal.class);
+           ResponseEntity<BigDecimal> response = restTemplate.exchange(API_BASE_URL+current.getUser().getId(),HttpMethod.GET, makeAuthEntity(), BigDecimal.class);
             return response.getBody();
        // }catch (RestClientResponseException | ResourceAccessException e){
          //   BasicLogger.log(e.getMessage());
