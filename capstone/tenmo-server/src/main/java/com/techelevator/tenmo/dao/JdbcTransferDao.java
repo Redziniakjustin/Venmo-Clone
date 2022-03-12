@@ -14,6 +14,8 @@ import java.util.List;
 @Component
 public class JdbcTransferDao implements TransferDao{
     private JdbcTemplate jdbcTemplate;
+    private JdbcAccountDao accountDao;
+
 
     public JdbcTransferDao(JdbcTemplate jdbcTemplate){
 
@@ -65,9 +67,9 @@ public class JdbcTransferDao implements TransferDao{
 
     // #4 NEW TRANSACTION POSTED
     @Override
-    public boolean createTransaction(int transfer_type_id, int transfer_status_id, int account_from, int account_to, BigDecimal amount) {
+    public void createTransaction(Transfer transfer) {
         String sql = SQL_TRANSFER_BASE+"INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount) VALUES (?,?,?,?,?);";
-        return jdbcTemplate.update(SQL_TRANSFER_BASE, transfer_type_id, transfer_status_id, account_from, account_to, amount) == 1;
+        jdbcTemplate.update(SQL_TRANSFER_BASE, transfer.getTransferId(), transfer.getTransferTypeId(), transfer.getAccountFrom(), transfer.getAccountTo(), transfer.getAmount());
     }
 
     // #4 ADD OR SUBTRACT USERS BALANCE
@@ -76,7 +78,23 @@ public class JdbcTransferDao implements TransferDao{
         return jdbcTemplate.update(sql,account_id);
     }
 
-   // # REMOVE TRANSACTION
+    @Override
+    public Transfer sendTransfer(int acccount_id,int user_id, int user_from_id, int user_to_id, BigDecimal amount) {
+        if (user_from_id == user_to_id) {
+            System.out.println( "You cannot send money to yourself!");
+        } if(amount.compareTo(accountDao.getBalance(user_from_id))==-1&&amount.compareTo(new BigDecimal(0))==1) {
+            String sql = SQL_TRANSFER_BASE+"INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount) VALUES (?,?,?,?,?);";
+            jdbcTemplate.update(SQL_TRANSFER_BASE, acccount_id, user_id, user_from_id, user_to_id, amount);
+        }
+return null;
+    }
+
+    @Override
+    public Transfer requestTransfer(int user_from_id, int user_to_id, BigDecimal amount) {
+        return null;
+    }
+
+    // # REMOVE TRANSACTION
    // public boolean delete(int transferId) {
     //    String sql = "DELETE FROM transfer WHERE transferId=?";
      //   return jdbcTemplate.update(sql, transferId) == 1;

@@ -1,13 +1,12 @@
 package com.techelevator.tenmo;
 
 import com.techelevator.tenmo.model.AuthenticatedUser;
+import com.techelevator.tenmo.model.User;
 import com.techelevator.tenmo.model.UserCredentials;
-import com.techelevator.tenmo.services.AccountService;
-import com.techelevator.tenmo.services.AuthenticationService;
-import com.techelevator.tenmo.services.ConsoleService;
-import com.techelevator.tenmo.services.TransferService;
+import com.techelevator.tenmo.services.*;
 
 import java.math.BigDecimal;
+import java.security.Principal;
 
 public class App {
 
@@ -16,6 +15,7 @@ public class App {
     private final ConsoleService consoleService = new ConsoleService();
     private final AuthenticationService authenticationService = new AuthenticationService(API_BASE_URL);
     private AccountService accountService = new AccountService();
+    private UserService userService = new UserService();
     private final TransferService transferService = new TransferService();
 
     private AuthenticatedUser currentUser;
@@ -112,16 +112,28 @@ public class App {
        }
     }
 
-
 	private void viewPendingRequests() {
 		//if()
-		
 	}
 
 	private void sendBucks() {
-		// TODO Auto-generated method stub
-		
+        int menuSelection = -1;
+        while (menuSelection != 0) {
+            consoleService.printTEBucksMenu();
+            menuSelection = consoleService.promptForMenuSelection("Please choose an option: ");
+            if (menuSelection == 1) {
+             //   System.out.println(consoleService.printUserMenu(userService.getAllUsers()));
+            } else if (menuSelection == 2) {
+
+
+
+            } else if (menuSelection != 0) {
+                System.out.println("Invalid Selection");
+                consoleService.pause();
+            }
+    }
 	}
+
 
 	private void requestBucks() {
 		// TODO Auto-generated method stub

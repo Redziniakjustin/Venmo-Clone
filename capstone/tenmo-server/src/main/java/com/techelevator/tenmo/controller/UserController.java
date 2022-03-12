@@ -24,7 +24,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public List<User> list() {
+    public List<User> listAllUsers() {
         return userDao.findAll();
     }
 

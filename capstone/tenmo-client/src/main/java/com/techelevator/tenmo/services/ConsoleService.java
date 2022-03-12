@@ -36,6 +36,14 @@ public class ConsoleService {
         System.out.println();
     }
 
+    public void printTEBucksMenu() {
+        System.out.println();
+        System.out.println("1: See List Of Active Users");
+        System.out.println("2: Send Money");
+        System.out.println("0: Exit");
+        System.out.println();
+    }
+
     public void printMainMenu() {
         System.out.println();
         System.out.println("1: View your current balance");
@@ -90,6 +98,7 @@ public class ConsoleService {
     }
 
     public void printUserMenu(User[] users) {
+
         System.out.println("--------------------");
         System.out.println("Users");
         System.out.printf("%-10s%s%n","ID","Name");

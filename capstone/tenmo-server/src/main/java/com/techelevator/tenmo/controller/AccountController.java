@@ -8,10 +8,7 @@ import com.techelevator.tenmo.dao.UserDao;
 import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.Transfer;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.PrintWriter;
 import java.math.BigDecimal;
@@ -46,8 +43,17 @@ public class AccountController {
         return dao.findAccountByUser(principal.getName());
     }
 
+    //public Account getAccountBalance(Principal principal){
+    //    return dao.getBalance(principal.getName())
+    //}
+
+
+ /*   @RequestMapping(value = "",method = RequestMethod.PUT)
+    public Account updateAccount()*/
+
+  /*  @RequestMapping(value = "", method = RequestMethod.GET)
     private Long getCurrentUserId(Principal principal){
         return userDao.findByUsername(principal.getName()).getId();
-    }
+    }*/
 }
 

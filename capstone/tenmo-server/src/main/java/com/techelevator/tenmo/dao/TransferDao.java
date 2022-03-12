@@ -11,8 +11,12 @@ public interface TransferDao {
 
     List<Transfer> getAllList(String username);
     Transfer getSingleTransfer(int transferId);
-    boolean createTransaction(int transfer_type_id, int transfer_status_id, int account_from, int account_to, BigDecimal amount);
+    public void createTransaction(Transfer transfer);
     Integer updateBalance(int id);
+
+    Transfer sendTransfer (int account_id, int user_id, int user_from_id, int user_to_id, BigDecimal amount);
+    Transfer requestTransfer (int user_from_id, int user_to_id, BigDecimal amount);
+
 
     //Transfer getId (int transferId);
     //boolean delete(int transferId);

@@ -25,32 +25,47 @@ public class TransferController {
 
     // Finished up the constructor and Request Mapping on this page
 
-    public TransferController(TransferDao dao, RestAccountService accountService){
+    public TransferController(TransferDao dao, RestAccountService accountService) {
         this.dao = dao;
-        this.accountService=accountService;
+        this.accountService = accountService;
     }
 
-    @RequestMapping( value = "", method = RequestMethod.GET)
-    public List <Transfer> getAllTransfers(Principal principal){
-      return dao.getAllList(principal.getName());
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public List<Transfer> getAllTransfers(Principal principal) {
+        return dao.getAllList(principal.getName());
     }
 
-    @RequestMapping ( value ="/{id}", method = RequestMethod.GET)
-    public Transfer getOneTransfer(@PathVariable int id){
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public Transfer getOneTransfer(@PathVariable int id) {
         return dao.getSingleTransfer(id);
     }
 
-
-   //This would be a POST to update the transactions
+/*
+    //This would be a POST to update the transactions
     @ResponseStatus(HttpStatus.CREATED)
-    @RequestMapping(value = "{id}",method = RequestMethod.POST)
-            public void newTransaction(@Valid @RequestBody Transfer completedTransfer){
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    public void newTransaction(Principal principal, @RequestBody Transfer transfer) {
+        dao.createTransaction(transfer);
+        dao.updateBalance(transfer);
 
-        if (! dao.createTransaction(completedTransfer.getTransferTypeId(),completedTransfer.getTransferStatusId(),
-             completedTransfer.getAccountFrom(),completedTransfer.getAccountTo(), completedTransfer.getAmount())){
-         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Transfer Request Failed.");
+        if (!dao.createTransaction(completedTransfer.getTransferTypeId(), completedTransfer.getTransferStatusId(),
+                completedTransfer.getAccountFrom(), completedTransfer.getAccountTo(), completedTransfer.getAmount())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Transfer Request Failed.");
+        } else {
+            return true;
+            // return dao.createTransaction(completedTransfer.getTransferTypeId(),completedTransfer.getTransferStatusId(),
+            //       completedTransfer.getAccountFrom(),completedTransfer.getAccountTo(), completedTransfer.getAmount());
         }
     }
+*/
+
+  /*      @RequestMapping ( value ="request", method = RequestMethod.POST)
+        public void sendMoney(@RequestBody Transfer requestTransfer){
+        String results = dao.
+            return dao.getSingleTransfer(id);
+        }
+*/
+
 
 /*
    //This would be a PUT to update the balance - maybe this would go into Account Controller
