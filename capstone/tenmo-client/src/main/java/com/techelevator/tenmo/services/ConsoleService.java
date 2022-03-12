@@ -109,5 +109,11 @@ public class ConsoleService {
         System.out.println();
     }
 
+   public void promptForRecipient(){
+        System.out.println("Who will you send money to? Please enter their username and press enter to continue: ");
+
+        //System.out.println("Great! And how much money will you be sending " + user.getUsername());
+    }
+
 
 }

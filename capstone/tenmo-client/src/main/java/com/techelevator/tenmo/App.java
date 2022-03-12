@@ -68,6 +68,7 @@ public class App {
             consoleService.printErrorMessage();
         }else{
             accountService.currentUser = currentUser;
+            transferService.currentUser = currentUser;
         }
     }
 
@@ -129,6 +130,10 @@ public class App {
             }
             else if (menuSelection == 2) {
                 //this will be where our transfer methods will now go
+                int recipentId = consoleService.promptForInt("Who will you send money to? Please enter their id and press enter to continue (0 to cancel): ");
+                BigDecimal amount = consoleService.promptForBigDecimal("Enter amount: ");
+
+                transferService.sendBucks(recipentId, amount);
 
             } else if (menuSelection != 0) {
                 System.out.println("Invalid Selection");
