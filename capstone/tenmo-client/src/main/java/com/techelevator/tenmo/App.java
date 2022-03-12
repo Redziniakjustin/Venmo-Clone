@@ -1,5 +1,6 @@
 package com.techelevator.tenmo;
 
+import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.AuthenticatedUser;
 import com.techelevator.tenmo.model.User;
 import com.techelevator.tenmo.model.UserCredentials;
@@ -122,10 +123,12 @@ public class App {
             consoleService.printTEBucksMenu();
             menuSelection = consoleService.promptForMenuSelection("Please choose an option: ");
             if (menuSelection == 1) {
-             //   System.out.println(consoleService.printUserMenu(userService.getAllUsers()));
-            } else if (menuSelection == 2) {
-
-
+                //THIS WORKS NOW - however is not authorized ( I commented it out on the Users Controller- Server Side
+                User[] allUsers = userService.getAllUsers();
+                consoleService.printUserMenu(allUsers);
+            }
+            else if (menuSelection == 2) {
+                //this will be where our transfer methods will now go
 
             } else if (menuSelection != 0) {
                 System.out.println("Invalid Selection");

@@ -43,11 +43,6 @@ public class AccountController {
         return dao.findAccountByUser(principal.getName());
     }
 
-    //public Account getAccountBalance(Principal principal){
-    //    return dao.getBalance(principal.getName())
-    //}
-
-
  /*   @RequestMapping(value = "",method = RequestMethod.PUT)
     public Account updateAccount()*/
 

@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/users")
-@PreAuthorize("isAuthenticated()")
+//@PreAuthorize("isAuthenticated()")
 public class UserController {
 
     private UserDao userDao;
@@ -24,7 +24,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public List<User> listAllUsers() {
+    public List<User> listAllUsers(Principal principal) {
         return userDao.findAll();
     }
 

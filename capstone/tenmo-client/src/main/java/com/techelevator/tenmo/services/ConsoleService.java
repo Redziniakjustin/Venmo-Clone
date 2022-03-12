@@ -76,7 +76,6 @@ public class ConsoleService {
             }
         }
     }
-
     public BigDecimal promptForBigDecimal(String prompt) {
         System.out.print(prompt);
         while (true) {
@@ -98,15 +97,15 @@ public class ConsoleService {
     }
 
     public void printUserMenu(User[] users) {
-
-        System.out.println("--------------------");
-        System.out.println("Users");
+        System.out.println();
+        System.out.println("---------------------------");
+        System.out.println("Current Users");
         System.out.printf("%-10s%s%n","ID","Name");
-        System.out.println("--------------------");
+        System.out.println("---------------------------");
         for(User u : users) {
             System.out.printf("%-10s%s%n",u.getId(),u.getUsername());
         }
-        System.out.println("----------");
+        System.out.println("---------------------------");
         System.out.println();
     }
 

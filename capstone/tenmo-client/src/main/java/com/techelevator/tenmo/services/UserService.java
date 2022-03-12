@@ -11,14 +11,11 @@ import org.springframework.web.client.RestTemplate;
 
 public class UserService {
 
-    public static String API_BASE_URL = "http://localhost:8080/account/";
+    public static String API_BASE_URL = "http://localhost:8080/users";
     private RestTemplate restTemplate = new RestTemplate();
     public AuthenticatedUser currentUser= new AuthenticatedUser();
    private String authToken = null;
 
-    //public UserService(AuthenticatedUser currentUser) {
-      //  this.currentUser=currentUser;
-   // }
 
     public User[] getAllUsers(){
         User[] users = null;

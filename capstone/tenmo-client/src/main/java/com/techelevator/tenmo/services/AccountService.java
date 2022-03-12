@@ -20,9 +20,6 @@ public class AccountService {
     private RestTemplate restTemplate = new RestTemplate();
     public AuthenticatedUser currentUser= new AuthenticatedUser();
 
-    public AccountService(AuthenticatedUser currentUser) {
-        this.currentUser=currentUser;
-    }
 
     private String authToken = null;
 
@@ -40,6 +37,7 @@ public class AccountService {
         return userAccount;
     }
 
+    //NOT CURRENTLY BEING USED
     public Account[] getAllAccounts(){
         Account[] accounts = null;
         try {
