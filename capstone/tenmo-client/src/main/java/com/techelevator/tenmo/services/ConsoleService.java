@@ -1,6 +1,7 @@
 package com.techelevator.tenmo.services;
 
 
+import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.User;
 import com.techelevator.tenmo.model.UserCredentials;
 
@@ -36,10 +37,27 @@ public class ConsoleService {
         System.out.println();
     }
 
+
+    public void printTransferMenu() {
+        System.out.println();
+        System.out.println("1: See All Previous Transfers");
+        System.out.println("2: See Individual Transfers By Id");
+        System.out.println("0: Exit");
+        System.out.println();
+    }
+
     public void printTEBucksMenu() {
         System.out.println();
         System.out.println("1: See List Of Active Users");
         System.out.println("2: Send Money");
+        System.out.println("0: Exit");
+        System.out.println();
+    }
+
+    public void printRequestMenu() {
+        System.out.println();
+        System.out.println("1: See List of Active Users");
+        System.out.println("2: Request Money");
         System.out.println("0: Exit");
         System.out.println();
     }
@@ -60,7 +78,6 @@ public class ConsoleService {
         String password = promptForString("Password: ");
         return new UserCredentials(username, password);
     }
-
     public String promptForString(String prompt) {
         System.out.print(prompt);
         return scanner.nextLine();
@@ -86,16 +103,13 @@ public class ConsoleService {
             }
         }
     }
-
     public void pause() {
         System.out.println("\nPress Enter to continue...");
         scanner.nextLine();
     }
-
     public void printErrorMessage() {
         System.out.println("An error occurred. Check the log for details.");
     }
-
     public void printUserMenu(User[] users) {
         System.out.println();
         System.out.println("---------------------------");
@@ -107,6 +121,26 @@ public class ConsoleService {
         }
         System.out.println("---------------------------");
         System.out.println();
+    }
+    public void printAllTransferMenu(Transfer[] allTransfers) {
+        System.out.println();
+        System.out.println("---------------------------");
+        System.out.println("List of Previous Transfers:");
+        System.out.printf("%-10s%s%n","Transfer Type","From","To","Amount");
+        System.out.println("---------------------------");
+        for(Transfer transfer : allTransfers) {
+          //  System.out.println(transfer);
+            System.out.printf("%-10s%s%n",transfer.getTransferTypeId(),transfer.getAccountTo(), transfer.getAccountFrom(), transfer.getAmount());
+        }
+        System.out.println("---------------------------");
+        System.out.println();
+    }
+
+    public void printSingleTransferMenu(Transfer transfer){
+        System.out.println();
+        System.out.println("Transfer Individual Record Information:");
+        System.out.printf("%-10s%s%n","Transfer Type","From","To","Amount");
+        System.out.printf("%-10s%s%n",transfer.getTransferTypeId(),transfer.getAccountTo(), transfer.getAccountFrom(), transfer.getAmount());
     }
 
    public void promptForRecipient(){

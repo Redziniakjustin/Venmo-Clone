@@ -40,10 +40,12 @@ public class JdbcTransferDao implements TransferDao{
 
     //#6 GET ALL TRANSACTIONS FOR SPECIFIC USER
     @Override
-    public List<Transfer> getAllList(String username) {
+    public List<Transfer> getAllList() {
         List<Transfer> transfers = new ArrayList<>();
-       String sql = SQL_TRANSFER_BASE+ " WHERE tu.username = ?;";
-        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, username);
+       String sql = "SELECT transfer_id, transfer_type_id, transfer_status_id, account_from, account_to, amount \n" +
+               "\t\t\tFROM transfer;";
+        //String sql = SQL_TRANSFER_BASE+ " WHERE tu.username = ?;";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
         while(results.next()){
             Transfer transferForList = mapToRow(results);
             transfers.add(transferForList);
@@ -55,17 +57,20 @@ public class JdbcTransferDao implements TransferDao{
     @Override
     public Transfer getSingleTransfer(int transferId) {
         Transfer transfer = null;
+        String sql = "SELECT transfer_id, transfer_type_id, transfer_status_id, account_from, account_to, amount \n" +
+                "\t\t\tFROM transfer\n" +
+                "\t\t\tWHERE transfer_id = ?;";
       //  String sql = "SELECT transfer_type_id, transfer_status_id, account_from, account_to, amount FROM transfer WHERE transfer_id = ?;";
-        String sql = SQL_TRANSFER_BASE+ " WHERE transfer_id = ?;";
+       // String sql = SQL_TRANSFER_BASE+ " WHERE transfer_id = ?;";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, transferId);
         try{
-        if(results.next()){
+        if (results.next()){
             transfer = mapToRow(results);
         }
         }catch(Exception e){
                 System.out.println("The transfer: " + transferId + " was not found.");
         }
-        return null;
+        return transfer;
     }
 
     // #4 NEW TRANSACTION POSTED
@@ -89,7 +94,6 @@ public class JdbcTransferDao implements TransferDao{
         Account fromAccount = accountDao.findAccountByUser(userDao.findByUserId(user_from_id).getUsername());
         Account toAccount = accountDao.findAccountByUser(userDao.findByUserId(user_to_id).getUsername());
 
-
         BigDecimal testBalance = accountDao.getBalance(fromAccount.getAccount_id());
         BigDecimal testAmount = amount;
 
@@ -106,17 +110,26 @@ public class JdbcTransferDao implements TransferDao{
 
     @Override
     public String requestTransfer(int user_from_id, int user_to_id, BigDecimal amount) {
-        if(user_from_id == user_to_id){
+        if (user_from_id == user_to_id) {
             System.out.println("You cannot send money to yourself!");
-        } if(amount.compareTo(new BigDecimal(0))== 1){
-            String sql = "INSERT INTO transfers (transfer_type_id, transfer_status_id, account_from, account_to, amount VALUES (1, 1, ?, ?, ?);";
-            jdbcTemplate.update(sql, user_from_id, user_to_id, amount);
-            return "Great!! We'll send that request over now! Have a wonderful day!";
-        }else{
-            return "Oops! Sorry! There was a problem when sending!";
         }
-    }
+        Account toAccount = accountDao.findAccountByUser(userDao.findByUserId(user_from_id).getUsername());
+        Account fromAccount = accountDao.findAccountByUser(userDao.findByUserId(user_to_id).getUsername());
 
+        BigDecimal testBalance = accountDao.getBalance(fromAccount.getAccount_id());
+        BigDecimal testAmount = amount;
+
+        if (amount.compareTo(new BigDecimal(0)) == 1) {
+                String sql = "INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount) VALUES (1, 1, ?, ?, ?);";
+            jdbcTemplate.update(sql, fromAccount.getAccount_id(), toAccount.getAccount_id(), amount);
+            accountDao.addToBalance(amount, user_from_id);
+            accountDao.subtractFromBalance(amount, user_to_id);
+             //   jdbcTemplate.update(sql, user_from_id, user_to_id, amount);
+                return "Great!! We'll send that request over now! Have a wonderful day!";
+            } else {
+                return "Oops! Sorry! There was a problem when sending!";
+            }
+        }
 
     public String updateTransfer(Transfer transfer, int status_id){
         if(status_id == 3){
@@ -127,8 +140,8 @@ public class JdbcTransferDao implements TransferDao{
         if(!(accountDao.getBalance(transfer.getAccountFrom()).compareTo(transfer.getAmount()) == -1)) {
             String sql = "UPDATE transfer SET transfer_status_id =? WHERE transfer_id =?;";
             jdbcTemplate.update(sql, status_id, transfer.getTransferId());
-            accountDao.addToBalance(transfer.getAmount(), transfer.getAccountTo());
-            accountDao.subtractFromBalance(transfer.getAmount(), transfer.getAccountFrom());
+            accountDao.subtractFromBalance(transfer.getAmount(), transfer.getAccountTo());
+            accountDao.addToBalance(transfer.getAmount(), transfer.getAccountFrom());
             return "The transfer was successful. Have a nice day!";
         }else{
             return "Insufficient funds for transfer. Sorry!";
@@ -146,6 +159,7 @@ public class JdbcTransferDao implements TransferDao{
         Transfer trns = new Transfer();
         trns.setTransferId(rs.getInt("transfer_id"));
         trns.setTransferTypeId(rs.getInt("transfer_type_id"));
+        trns.setTransferStatusId(rs.getInt("transfer_status_id"));
         trns.setAccountFrom(rs.getInt("account_from"));
         trns.setAccountTo(rs.getInt("account_to"));
         trns.setAmount(rs.getBigDecimal("amount"));

@@ -9,7 +9,8 @@ public interface TransferDao {
 
     //Updated list name from list to get All List so that it makes more sense in the controller
 
-    List<Transfer> getAllList(String username);
+    //List<Transfer> getAllList(String username);
+    List<Transfer> getAllList();
     Transfer getSingleTransfer(int transferId);
     void createTransaction(Transfer transfer);
     Integer updateBalance(int id);

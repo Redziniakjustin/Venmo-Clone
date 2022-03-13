@@ -1,9 +1,6 @@
 package com.techelevator.tenmo;
 
-import com.techelevator.tenmo.model.Account;
-import com.techelevator.tenmo.model.AuthenticatedUser;
-import com.techelevator.tenmo.model.User;
-import com.techelevator.tenmo.model.UserCredentials;
+import com.techelevator.tenmo.model.*;
 import com.techelevator.tenmo.services.*;
 
 import java.math.BigDecimal;
@@ -21,8 +18,6 @@ public class App {
 
     private AuthenticatedUser currentUser;
 
-
-
     public static void main(String[] args) {
         App app = new App();
         app.run();
@@ -35,6 +30,7 @@ public class App {
             mainMenu();
         }
     }
+
     private void loginMenu() {
         int menuSelection = -1;
         while (menuSelection != 0 && currentUser == null) {
@@ -66,7 +62,7 @@ public class App {
         currentUser = authenticationService.login(credentials);
         if (currentUser == null) {
             consoleService.printErrorMessage();
-        }else{
+        } else {
             accountService.currentUser = currentUser;
             transferService.currentUser = currentUser;
             transferService.accountService = accountService;
@@ -97,56 +93,95 @@ public class App {
         }
     }
 
-	private void viewCurrentBalance() {
+    private void viewCurrentBalance() {
 
-        if(currentUser != null){
+        if (currentUser != null) {
             System.out.println(accountService.getBalance());
-        }else{
+        } else {
             consoleService.printErrorMessage();
         }
-		
-	}
-
-	private void viewTransferHistory() {
-		if(currentUser != null){
-            System.out.println(transferService.getAllTransfers(currentUser.getUser().getId()));
-        }else{
-            consoleService.printErrorMessage();
-       }
     }
 
-	private void viewPendingRequests() {
-		//if()
-	}
+    private void getSingleTransfer(int transferId) {
+        if (currentUser != null) {
+            System.out.println(transferService.getSingleTransfer(transferId));
+        } else {
+            consoleService.printErrorMessage();
+        }
+    }
 
-	private void sendBucks() {
+    private void viewTransferHistory() {
+        int menuSelection = -1;
+        while (menuSelection != 0) {
+            consoleService.printTransferMenu();
+            menuSelection = consoleService.promptForMenuSelection("Please choose an option: ");
+            if (menuSelection == 1) {
+                if (currentUser != null) {
+                    Transfer[] transfers = transferService.getAllTransfers();
+                    consoleService.printAllTransferMenu(transfers);
+                } else {
+                    consoleService.printErrorMessage();
+                }
+            } else if (menuSelection == 2) {
+                int transfer_id = consoleService.promptForInt("Please enter the transfer ID that you would like to reference:");
+                Transfer transfer = transferService.getSingleTransfer(transfer_id);
+                consoleService.printSingleTransferMenu(transfer);
+
+            /*    Transfer transfer = transferService.getSingleTransfer();
+                consoleService.printSingleTransferMenu();*/
+            } else if (menuSelection != 0) {
+                System.out.println("Invalid Selection");
+                consoleService.pause();
+            }
+        }
+    }
+
+    private void viewPendingRequests() {
+        //if()
+    }
+
+    private void viewIndividualTransfers() {
+    }
+
+    private void sendBucks() {
         int menuSelection = -1;
         while (menuSelection != 0) {
             consoleService.printTEBucksMenu();
             menuSelection = consoleService.promptForMenuSelection("Please choose an option: ");
             if (menuSelection == 1) {
-                //THIS WORKS NOW - however is not authorized ( I commented it out on the Users Controller- Server Side
                 User[] allUsers = userService.getAllUsers();
                 consoleService.printUserMenu(allUsers);
-            }
-            else if (menuSelection == 2) {
-                //this will be where our transfer methods will now go
+            } else if (menuSelection == 2) {
                 int recipentId = consoleService.promptForInt("Who will you send money to? Please enter their id and press enter to continue (0 to cancel): ");
                 BigDecimal amount = consoleService.promptForBigDecimal("Enter amount: ");
-
                 transferService.sendBucks(recipentId, amount);
+            } else if (menuSelection != 0) {
+                System.out.println("Invalid Selection");
+                consoleService.pause();
+            }
+        }
+    }
+
+    private void requestBucks() {
+        int menuSelection = -1;
+        while (menuSelection != 0) {
+            consoleService.printRequestMenu();
+            menuSelection = consoleService.promptForMenuSelection("Please choose an option: ");
+            if (menuSelection == 1) {
+                User[] allUsers = userService.getAllUsers();
+                consoleService.printUserMenu(allUsers);
+            } else if (menuSelection == 2) {
+                int recipentId = consoleService.promptForInt("Who will you request money from? Please enter their id and press enter to continue (0 to cancel): ");
+                BigDecimal amount = consoleService.promptForBigDecimal("Enter amount: ");
+
+                transferService.requestBucks(recipentId, amount);
 
             } else if (menuSelection != 0) {
                 System.out.println("Invalid Selection");
                 consoleService.pause();
             }
+
+        }
+
     }
-	}
-
-
-	private void requestBucks() {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

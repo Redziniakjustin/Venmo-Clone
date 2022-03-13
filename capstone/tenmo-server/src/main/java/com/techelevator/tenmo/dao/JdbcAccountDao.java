@@ -23,7 +23,6 @@ public class JdbcAccountDao implements AccountDao{
         this.userDao = userDao;
 
     }
-
     // GET ACCOUNT INFORMATION
     @Override
     public Account findAccountByUser(String username){
