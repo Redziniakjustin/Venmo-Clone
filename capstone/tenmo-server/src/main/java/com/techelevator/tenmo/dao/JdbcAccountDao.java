@@ -16,9 +16,12 @@ import java.util.List;
 public class JdbcAccountDao implements AccountDao{
 
     private JdbcTemplate jdbcTemplate;
+    private JdbcUserDao userDao;
 
-    public JdbcAccountDao(JdbcTemplate jdbcTemplate){
+    public JdbcAccountDao(JdbcTemplate jdbcTemplate, JdbcUserDao userDao){
         this.jdbcTemplate = jdbcTemplate;
+        this.userDao = userDao;
+
     }
 
     // GET ACCOUNT INFORMATION
@@ -58,6 +61,30 @@ public class JdbcAccountDao implements AccountDao{
             return balance;
         }
 
+        public BigDecimal addToBalance(BigDecimal amountTransferred, int id){
+        Account account = findAccountByUser(userDao.findByUserId(id).getUsername());
+        BigDecimal newBal = account.getBalance().add(amountTransferred);
+            System.out.println("The new balance is: " + newBal);
+        String sql = "UPDATE account SET balance = ? WHERE user_id = ?";
+        try{
+            jdbcTemplate.update(sql, newBal,id);
+        }catch(DataAccessException dae){
+            System.out.println("Sorry! There was an error processing that request.");
+            }
+        return account.getBalance();
+
+        }
+
+        public BigDecimal subtractFromBalance(BigDecimal amountTransferred, int id){
+        Account account = findAccountByUser(userDao.findByUserId(id).getUsername());
+        BigDecimal newBal = account.getBalance().subtract(amountTransferred);
+        String sql = "UPDATE account SET balance = ? WHERE user_id = ?";
+        try{
+            jdbcTemplate.update(sql, newBal, id);
+        }catch(DataAccessException dae){
+            System.out.println("Sorry! There was an error processing that request.");
+        } return account.getBalance();
+        }
         //#4 GET LIST OF ACCOUNTS
  /*   @Override
     public List<Account> getAllAccounts() {

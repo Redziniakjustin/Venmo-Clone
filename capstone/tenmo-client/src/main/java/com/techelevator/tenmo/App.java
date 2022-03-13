@@ -69,6 +69,7 @@ public class App {
         }else{
             accountService.currentUser = currentUser;
             transferService.currentUser = currentUser;
+            transferService.accountService = accountService;
         }
     }
 

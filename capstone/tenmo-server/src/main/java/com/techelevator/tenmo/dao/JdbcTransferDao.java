@@ -15,11 +15,14 @@ import java.util.List;
 public class JdbcTransferDao implements TransferDao{
     private JdbcTemplate jdbcTemplate;
     private JdbcAccountDao accountDao;
+    private JdbcUserDao userDao;
 
 
-    public JdbcTransferDao(JdbcTemplate jdbcTemplate){
+    public JdbcTransferDao(JdbcTemplate jdbcTemplate, JdbcAccountDao accountDao, JdbcUserDao userDao){
 
         this.jdbcTemplate = jdbcTemplate;
+        this.accountDao = accountDao;
+        this.userDao = userDao;
     }
     public static List<Transfer> listTransfers = new ArrayList<>();
 
@@ -79,19 +82,57 @@ public class JdbcTransferDao implements TransferDao{
     }
 
     @Override
-    public Transfer sendTransfer(int acccount_id,int user_id, int user_from_id, int user_to_id, BigDecimal amount) {
+    public String sendTransfer(int user_from_id, int user_to_id, BigDecimal amount) {
         if (user_from_id == user_to_id) {
-            System.out.println( "You cannot send money to yourself!");
-        } if(amount.compareTo(accountDao.getBalance(user_from_id))==-1&&amount.compareTo(new BigDecimal(0))==1) {
-            String sql = SQL_TRANSFER_BASE+"INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount) VALUES (?,?,?,?,?);";
-            jdbcTemplate.update(SQL_TRANSFER_BASE, acccount_id, user_id, user_from_id, user_to_id, amount);
+            System.out.println("You cannot send money to yourself!");
         }
-return null;
+        Account fromAccount = accountDao.findAccountByUser(userDao.findByUserId(user_from_id).getUsername());
+        Account toAccount = accountDao.findAccountByUser(userDao.findByUserId(user_to_id).getUsername());
+
+
+        BigDecimal testBalance = accountDao.getBalance(fromAccount.getAccount_id());
+        BigDecimal testAmount = amount;
+
+        if (amount.compareTo(accountDao.getBalance(fromAccount.getAccount_id())) == -1 && amount.compareTo(new BigDecimal(0)) == 1) {
+            String sql = "INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount) VALUES (2,2,?,?,?);";
+            jdbcTemplate.update(sql, fromAccount.getAccount_id(), toAccount.getAccount_id(), amount);
+            accountDao.addToBalance(amount, user_to_id);
+            accountDao.subtractFromBalance(amount, user_from_id);
+            return "Transfer complete! Wonderful!!!";
+        } else {
+            return "Transfer has failed! Oh no! This is due to insufficient funds, not sending an amount greater than 0, or trying to send money to yourself. Please try again!";
+        }
     }
 
     @Override
-    public Transfer requestTransfer(int user_from_id, int user_to_id, BigDecimal amount) {
-        return null;
+    public String requestTransfer(int user_from_id, int user_to_id, BigDecimal amount) {
+        if(user_from_id == user_to_id){
+            System.out.println("You cannot send money to yourself!");
+        } if(amount.compareTo(new BigDecimal(0))== 1){
+            String sql = "INSERT INTO transfers (transfer_type_id, transfer_status_id, account_from, account_to, amount VALUES (1, 1, ?, ?, ?);";
+            jdbcTemplate.update(sql, user_from_id, user_to_id, amount);
+            return "Great!! We'll send that request over now! Have a wonderful day!";
+        }else{
+            return "Oops! Sorry! There was a problem when sending!";
+        }
+    }
+
+
+    public String updateTransfer(Transfer transfer, int status_id){
+        if(status_id == 3){
+            String sql = "UPDATE transfer SET transfer_status = ? WHERE transfer_id = ?";
+            jdbcTemplate.update(sql, status_id, transfer.getTransferId());
+            return "The transfer has been updated. We're sorry, but the transfer was rejected.";
+        }
+        if(!(accountDao.getBalance(transfer.getAccountFrom()).compareTo(transfer.getAmount()) == -1)) {
+            String sql = "UPDATE transfer SET transfer_status_id =? WHERE transfer_id =?;";
+            jdbcTemplate.update(sql, status_id, transfer.getTransferId());
+            accountDao.addToBalance(transfer.getAmount(), transfer.getAccountTo());
+            accountDao.subtractFromBalance(transfer.getAmount(), transfer.getAccountFrom());
+            return "The transfer was successful. Have a nice day!";
+        }else{
+            return "Insufficient funds for transfer. Sorry!";
+        }
     }
 
     // # REMOVE TRANSACTION

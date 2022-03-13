@@ -21,6 +21,7 @@ public class TransferService {
 
     private String authToken = null;
     public AuthenticatedUser currentUser = new AuthenticatedUser();
+    public AccountService accountService = new AccountService();
 
     public Transfer[] getAllTransfers(int id){
       //  Transfer[] allTransfer = null;
@@ -40,24 +41,49 @@ public class TransferService {
         String RESTUrl = API_BASE_URL + "users/user/" + recipientId;
         User recipient = restTemplate.exchange(API_BASE_URL + "users/user/" + recipientId, HttpMethod.GET, makeAuthEntity(), User.class).getBody();
 
-        if(!recipient.getId().equals(currentUser.getUser().getId())){
+        if(!recipient.getId().equals(currentUser.getUser().getId()) && (amount.compareTo(accountService.getBalance()) == 0 || amount.compareTo(accountService.getBalance()) == -1)){
             sendMoney.setAccountTo(recipient.getId());
             sendMoney.setAccountFrom(currentUser.getUser().getId());
             sendMoney.setAmount(amount);
+            executeTransfer(sendMoney);
         }
-        else{
+        else if(recipient.getId().equals(currentUser.getUser().getId())){
             System.out.println("Cannot transfer funds to yourself.");
         }
+        else if(amount.compareTo(accountService.getBalance()) == 1){
+            System.out.println("Insufficient funds.");
+        }
+
         System.out.println("[FOR TESTING REMOVE LATER] Transaction Complete!");
       }
 
-      public void requestBucks(){
+    public void requestBucks(){
 
-      }
+    }
+
+    public void executeTransfer(Transfer transaction){
+        //Add a transfer to the transfer table
+        //HttpEntity<Transfer> sendRequest = new HttpEntity<>(transaction);
+        restTemplate.exchange(API_BASE_URL + "/account/transfers/sendTransfer", HttpMethod.POST, makeAuthTransferEntity(transaction), Transfer.class);
+
+
+        //Update recipient's account balance
+        //Update the sender's account balance
+    }
+
+
 
     private HttpEntity<Void> makeAuthEntity(){
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(currentUser.getToken());
         return new HttpEntity<>(headers);
     }
+
+    private HttpEntity<Transfer> makeAuthTransferEntity(Transfer transfer){
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(currentUser.getToken());
+        return new HttpEntity<>(transfer, headers);
+    }
+
+
 }

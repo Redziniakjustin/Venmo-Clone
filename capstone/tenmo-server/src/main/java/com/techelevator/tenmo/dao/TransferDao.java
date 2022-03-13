@@ -11,11 +11,11 @@ public interface TransferDao {
 
     List<Transfer> getAllList(String username);
     Transfer getSingleTransfer(int transferId);
-    public void createTransaction(Transfer transfer);
+    void createTransaction(Transfer transfer);
     Integer updateBalance(int id);
 
-    Transfer sendTransfer (int account_id, int user_id, int user_from_id, int user_to_id, BigDecimal amount);
-    Transfer requestTransfer (int user_from_id, int user_to_id, BigDecimal amount);
+    String sendTransfer (int user_from_id, int user_to_id, BigDecimal amount);
+    String requestTransfer (int user_from_id, int user_to_id, BigDecimal amount);
 
 
     //Transfer getId (int transferId);

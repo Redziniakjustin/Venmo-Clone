@@ -40,6 +40,18 @@ public class TransferController {
         return dao.getSingleTransfer(id);
     }
 
+
+    @RequestMapping(value = "/sendTransfer", method = RequestMethod.POST)
+    public void createSendTransfer(@Valid @RequestBody Transfer sendTransfer){
+        System.out.println("TEST: Account ID From: " + sendTransfer.getAccountFrom());
+        System.out.println("TEST: Account ID To: " + sendTransfer.getAccountTo());
+        System.out.println("TEST: Amount: " + sendTransfer.getAmount());
+
+        dao.sendTransfer(sendTransfer.getAccountFrom(), sendTransfer.getAccountTo(), sendTransfer.getAmount());
+    }
+
+
+
 /*
     //This would be a POST to update the transactions
     @ResponseStatus(HttpStatus.CREATED)
