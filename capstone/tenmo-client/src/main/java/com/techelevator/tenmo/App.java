@@ -123,8 +123,11 @@ public class App {
                     consoleService.printErrorMessage();
                 }
             } else if (menuSelection == 2) {
+                System.out.println();
                 int transfer_id = consoleService.promptForInt("Please enter the transfer ID that you would like to reference:");
                 Transfer transfer = transferService.getSingleTransfer(transfer_id);
+                if(transferService.getSingleTransfer(transfer_id)==null){
+                }
                 consoleService.printSingleTransferMenu(transfer);
 
             /*    Transfer transfer = transferService.getSingleTransfer();
@@ -152,7 +155,8 @@ public class App {
                 User[] allUsers = userService.getAllUsers();
                 consoleService.printUserMenu(allUsers);
             } else if (menuSelection == 2) {
-                int recipentId = consoleService.promptForInt("Who will you send money to? Please enter their id and press enter to continue (0 to cancel): ");
+                System.out.println();
+                int recipentId = consoleService.promptForInt("Who would you like to send money to? Please enter their id and press enter to continue (0 to cancel): ");
                 BigDecimal amount = consoleService.promptForBigDecimal("Enter amount: ");
                 transferService.sendBucks(recipentId, amount);
             } else if (menuSelection != 0) {

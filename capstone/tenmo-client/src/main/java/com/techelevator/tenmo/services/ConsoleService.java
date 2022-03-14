@@ -125,12 +125,13 @@ public class ConsoleService {
     public void printAllTransferMenu(Transfer[] allTransfers) {
         System.out.println();
         System.out.println("---------------------------");
+        System.out.println();
         System.out.println("List of Previous Transfers:");
-        System.out.printf("%-10s%s%n","Transfer Type","From","To","Amount");
+        System.out.printf("%-10s %s %10s%n","From","To","Amount");
         System.out.println("---------------------------");
         for(Transfer transfer : allTransfers) {
           //  System.out.println(transfer);
-            System.out.printf("%-10s%s%n",transfer.getTransferTypeId(),transfer.getAccountTo(), transfer.getAccountFrom(), transfer.getAmount());
+            System.out.printf("%-10s %s %10s%n", transfer.getAccountTo(), transfer.getAccountFrom(), transfer.getAmount());
         }
         System.out.println("---------------------------");
         System.out.println();
@@ -139,8 +140,10 @@ public class ConsoleService {
     public void printSingleTransferMenu(Transfer transfer){
         System.out.println();
         System.out.println("Transfer Individual Record Information:");
-        System.out.printf("%-10s%s%n","Transfer Type","From","To","Amount");
-        System.out.printf("%-10s%s%n",transfer.getTransferTypeId(),transfer.getAccountTo(), transfer.getAccountFrom(), transfer.getAmount());
+        System.out.println("-----------------------------------------");
+        System.out.printf("%-10s %10s %10s %10s%n","Transfer #","From","To","Amount");
+        System.out.printf("%-10s %10s %10s %10s%n",transfer.getTransferId(), transfer.getAccountTo(), transfer.getAccountFrom(), transfer.getAmount());
+        System.out.println("-----------------------------------------");
     }
 
    public void promptForRecipient(){
