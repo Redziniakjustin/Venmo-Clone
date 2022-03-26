@@ -1,6 +1,7 @@
 # Tenmo-Clone
-![image](https://user-images.githubusercontent.com/47091126/160249406-5893fa75-c878-4fa9-8de5-6f8ee040bb80.png)
-
+<p align ="center">
+<img src="" width = "400" height="600" />
+</p>
 
 ## 💸 Summary
 This Capstone simulates a program similar to Venmo, demonstrating basic concepts of a fullstack application. This project was a pair-programming project my partner and I had done during week 9 at Tech Elevator. 
@@ -24,13 +25,14 @@ This Capstone simulates a program similar to Venmo, demonstrating basic concepts
 - As an authenticated user of the system, you can retrieve the details of any transfer based upon the transfer ID.
 
 ## 📅 Planning
-![image](https://user-images.githubusercontent.com/47091126/160249955-55877d19-da45-4e96-974f-4f0520cc7a81.png)
+<p align ="center">
+<img src="https://user-images.githubusercontent.com/47091126/160249955-55877d19-da45-4e96-974f-4f0520cc7a81.png" width = "700" height="800" />
+  
+## 🥵 Challenges
+In the beginning, communicating from our server to our client was a bit challenging but we took it one step at a time. We created test data that the client would send from forms and began building the pieces that we needed in order to save it to our database.
 
 ## 🐛 Known Bugs
-When "Comment" is clicked the generic input becomes visible but overlaps other content. I have not attempted to style it yet.
-There is not a submit button/functionality that actually stores comments for the transaction.
-Support and Contact Details
-You may email me at isaac.shoman@gmail.com with any questions or feedback
+
 
 ## 🚀 Technologies Used
 CLI and main application uses Java, while the databases (creating, reading, updating, and deleting) use PostgreSQL.
