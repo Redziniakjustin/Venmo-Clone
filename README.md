@@ -1,7 +1,7 @@
 # Tenmo-Clone
 
 ## 💸 Summary
-This Capstone simulates a program similar to Venmo, demonstrating basic concepts of a fullstack application. This project was a pair-programming project my partner and I had done during week 9 at Tech Elevator. 
+This Capstone simulates a program similar to Venmo, demonstrating basic concepts of a fullstack application. This project was a pair-programming project my partner and I had done during a coding program.
 
 
 ## 💥 Features
